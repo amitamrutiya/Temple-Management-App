@@ -1,16 +1,14 @@
-# temple
+# Temple Management App
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This Project Is a Temple Management Application For GFSC Township Charitable Trust Temple located in Jamanagar
 
-A few resources to get you started if this is your first Flutter project:
+Android and IOS both application created for temple
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+https://user-images.githubusercontent.com/91112485/205669074-f965d74b-2a05-4f51-a029-4beec45da293.mp4
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You can Download & Try application using this link
+https://drive.google.com/file/d/1ftYpT-D3-Cv75EGe4-pwZLNDtdVht9sp/view?usp=sharing
