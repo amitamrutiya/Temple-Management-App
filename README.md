@@ -7,7 +7,7 @@ This Project Is a Temple Management Application For GFSC Township Charitable Tru
 Technology : Flutter\
 Database : Firebase Firestore\
 Payment Gateway : Razorpay\
-State Management : GETx\
+State Management : GETx
 
 
 Android and IOS both application created for temple
