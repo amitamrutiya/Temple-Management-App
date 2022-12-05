@@ -1,13 +1,14 @@
 # Temple Management App
 
-Technology : Flutter\
-Database : Firebase Firestore\
-Payment Gateway : Razorpay\
-State Management : GETx\\
+This Project Is a Temple Management Application For GFSC Township Charitable Trust Temple located in Jamanagar
 
 ## Getting Started
 
-This Project Is a Temple Management Application For GFSC Township Charitable Trust Temple located in Jamanagar
+Technology : Flutter\
+Database : Firebase Firestore\
+Payment Gateway : Razorpay\
+State Management : GETx\
+
 
 Android and IOS both application created for temple
 
