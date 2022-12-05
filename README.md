@@ -1,9 +1,9 @@
 # Temple Management App
 
-Technology : Flutter
-Database : Firebase Firestore
-Payment Gateway : Razorpay
-State Management : GETx
+Technology : Flutter__
+Database : Firebase Firestore__
+Payment Gateway : Razorpay__
+State Management : GETx__
 
 ## Getting Started
 
