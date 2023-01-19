@@ -70,8 +70,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '242603092871',
     projectId: 'food-delivery-app-f6241',
     storageBucket: 'food-delivery-app-f6241.appspot.com',
-    androidClientId: '242603092871-pgj7ji5m1ujlggrltcrjh1q00umfk5c2.apps.googleusercontent.com',
-    iosClientId: '242603092871-g4ilrdvqsc9u4uh2mdksttlnj03ik67o.apps.googleusercontent.com',
+    androidClientId:
+        '242603092871-pgj7ji5m1ujlggrltcrjh1q00umfk5c2.apps.googleusercontent.com',
+    iosClientId:
+        '242603092871-g4ilrdvqsc9u4uh2mdksttlnj03ik67o.apps.googleusercontent.com',
     iosBundleId: 'com.example.temple',
   );
 }

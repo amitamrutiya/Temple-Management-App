@@ -46,7 +46,7 @@ class DonationStatusPage extends StatelessWidget {
                       status == 1 ? "Successful Order" : "Failed Order",
                       style: TextStyle(
                           fontSize: Dimensions.font20,
-                          fontWeight: FontWeight.bold ,
+                          fontWeight: FontWeight.bold,
                           color: Theme.of(context).disabledColor),
                       textAlign: TextAlign.center,
                     ),
@@ -54,7 +54,7 @@ class DonationStatusPage extends StatelessWidget {
                   SizedBox(height: Dimensions.height15),
                   Padding(
                     padding: EdgeInsets.all(Dimensions.height10),
-                    child: RaisedButton(
+                    child: OutlinedButton(
                       child: status == 1
                           ? Text("Back To Home")
                           : Text("Try Again"),

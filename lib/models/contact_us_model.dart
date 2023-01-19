@@ -8,13 +8,11 @@ class ContactUsModel {
   late DateTime _submitedAt;
 
   ContactUsModel(
-      {
-      required fullName,
+      {required fullName,
       required phoneNumber,
       required emailAddress,
       required message,
       required submitedAt}) {
-
     _fullName = fullName;
     _phoneNumber = phoneNumber;
     _emailAddress = emailAddress;
@@ -22,7 +20,6 @@ class ContactUsModel {
     _submitedAt = submitedAt;
   }
   ContactUsModel.fromJson(Map<String, dynamic> json) {
-
     _fullName = json['fullName'];
     _phoneNumber = json['phoneNumber'];
     _emailAddress = json['emailAddress'];

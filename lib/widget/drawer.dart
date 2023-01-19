@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
@@ -51,6 +50,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: Dimensions.screenWidth / 1.26,
       backgroundColor: const Color.fromRGBO(225, 220, 219, 1),
       child: ListView(children: [
         DrawerHeader(
@@ -68,6 +68,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                   ),
                   BigText(
                     text: "TOWNSHIP ",
+                    overFlow: TextOverflow.ellipsis,
                     size: Dimensions.font26,
                     color: AppColors.yellowColor,
                   ),
@@ -190,28 +191,29 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
           height: 1,
           thickness: 2,
         ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: RaisedButton(
-            child: SmallText(
-              text: 'Upload Expanses',
-              size: Dimensions.font16,
-            ),
-            onPressed: (() async {
-              if (_hasInternet == true) {
-                final path = await FlutterDocumentPicker.openDocument();
-                if (path != null) {
-                  File file = File(path);
-                  firebase_storage.UploadTask? task = await uploadFile(file);
-                  Navigator.pop(context);
-                }
-              } else {
-                showCustomSnakBar("Please Turn on Your Internet",
-                    title: "Attention");
-              }
-            }),
-          ),
-        )
+        // Align(
+        //   alignment: Alignment.bottomRight,
+        //   child: RaisedButton(
+        //     child: SmallText(
+        //       text: 'Upload Expanses',
+        //       size: Dimensions.font16,
+        //     ),
+        //     onPressed: (() async {
+        //       if (_hasInternet == true) {
+        //         final path = await FlutterDocumentPicker.openDocument();
+        //         if (path != null) {
+        //           File file = File(path);
+        //           firebase_storage.UploadTask? task = await uploadFile(file);
+        //           Navigator.pop(context);
+        //         }
+        //       } else {
+        //         showCustomSnakBar("Please Turn on Your Internet",
+        //             title: "Attention");
+        //       }
+        //     }),
+        //   ),
+        // ),
+        SizedBox(height: Dimensions.height30),
       ]),
     );
   }
@@ -264,7 +266,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
   Future<firebase_storage.UploadTask?> uploadFile(File file) async {
     // showLoaderDialog(context, "Uploading...");
     if (file == null) {
-      Scaffold.of(context)
+      ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Unable to Upload")));
       return null;
     }

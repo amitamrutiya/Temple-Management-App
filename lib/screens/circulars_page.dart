@@ -77,82 +77,87 @@ class _CircularPageState extends State<CircularPage> {
     File? file;
 
     return Scaffold(
-        appBar: Constant.appBar("Circulars"),
-        body: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection("Circular")
-                .orderBy('uploadTime', descending: true)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting)
-                return Center(child: CircularProgressIndicator());
-              if (hasInternet.isTrue) {
-                return Container(
-                    color: AppColors.pageColor,
-                    height: double.infinity,
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: Dimensions.width15,
-                      vertical: Dimensions.width20,
-                    ),
-                    child: ListView.builder(
-                        itemBuilder: ((context, index) {
-                          DocumentSnapshot data = snapshot.data!.docs[index];
-                          return Column(
-                            children: [
-                              Container(
-                                height: Dimensions.height20 * 8,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(
-                                        Dimensions.radius20)),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          right: Dimensions.width15,
-                                          left: Dimensions.width15,
-                                          top: Dimensions.height15),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          BigText(
-                                              text: '${data['eventTitle']}'),
-                                          InkWell(
-                                            child: Icon(Icons.delete),
-                                            onTap: () async {
-                                              if (ConnectivityResult.none ==
-                                                  await Connectivity()
-                                                      .checkConnectivity()) {
-                                                showCustomSnakBar(
-                                                    "Turn On Your Internet Connection",
-                                                    title: "Attention");
-                                              } else {
-                                                await deleteCircularData(
-                                                    data.id,
-                                                    index,
-                                                    data['pdfname']);
-                                              }
-                                            },
+      appBar: Constant.appBar("Circulars"),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection("Circular")
+              .orderBy('uploadTime', descending: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return Center(child: CircularProgressIndicator());
+            if (hasInternet.isTrue) {
+              return Container(
+                  color: AppColors.pageColor,
+                  height: double.infinity,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Dimensions.width15,
+                    vertical: Dimensions.width20,
+                  ),
+                  child: ListView.builder(
+                      itemBuilder: ((context, index) {
+                        DocumentSnapshot data = snapshot.data!.docs[index];
+                        return Column(
+                          children: [
+                            Container(
+                              height: Dimensions.height20 * 10,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.radius20)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        right: Dimensions.width15,
+                                        left: Dimensions.width15,
+                                        top: Dimensions.height15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        BigText(text: '${data['eventTitle']}'),
+                                        InkWell(
+                                          child: Icon(
+                                            Icons.delete,
+                                            size: Dimensions.iconSize24,
                                           ),
-                                        ],
-                                      ),
+                                          onTap: () async {
+                                            if (ConnectivityResult.none ==
+                                                await Connectivity()
+                                                    .checkConnectivity()) {
+                                              showCustomSnakBar(
+                                                  "Turn On Your Internet Connection",
+                                                  title: "Attention");
+                                            } else {
+                                              await deleteCircularData(data.id,
+                                                  index, data['pdfname']);
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(height: Dimensions.height10),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: Dimensions.width15),
-                                      child: BigText(text: data['date']),
-                                    ),
-                                    SizedBox(
-                                      height: Dimensions.height10,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
+                                  ),
+                                  SizedBox(height: Dimensions.height10),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: Dimensions.width15),
+                                    child: BigText(text: data['date']),
+                                  ),
+                                  SizedBox(
+                                    height: Dimensions.height10,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: ButtonTheme(
+                                      buttonColor: Colors.grey,
+                                      height: Dimensions.height20 * 2,
                                       child: RaisedButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
                                         onPressed: () async {
                                           await checkInternetConnection();
                                           if (hasInternet == true)
@@ -172,155 +177,174 @@ class _CircularPageState extends State<CircularPage> {
                                           ],
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: Dimensions.height20,
-                              )
-                            ],
-                          );
-                        }),
-                        itemCount: snapshot.data!.docs.length));
-              } else {
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    await checkInternetConnection();
-                    if (hasInternet == true) {
-                      setState(() {});
-                    }
-                  },
-                  child: ListView(
-                    children: [
-                      SizedBox(height: Dimensions.height45 * 2),
-                      Image.asset(
-                        'assets/images/no_internet.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(
-                        height: Dimensions.height15,
-                      ),
-                      Center(
-                        child: BigText(
-                          text: "Attention!!!",
-                          color: Colors.redAccent,
-                          size: Dimensions.font26,
-                        ),
-                      ),
-                      SizedBox(
-                        height: Dimensions.height10,
-                      ),
-                      Center(
-                        child: BigText(
-                          text: "Internet Connection Required",
-                          // color: Colors.redAccent,
-                          size: Dimensions.font20,
-                        ),
-                      ),
-                      SizedBox(height: Dimensions.height10),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: Dimensions.height10),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(Dimensions.radius20),
-                            color: AppColors.mainColor),
-                        child: Column(
-                          children: [
-                            Center(
-                              child: SmallText(
-                                text: "Turn on Internet",
-                                color: Colors.white,
-                                size: Dimensions.iconSize16,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            Center(
-                                child: SmallText(
-                              text: "Refresh This Page",
+                            SizedBox(
+                              height: Dimensions.height20,
+                            )
+                          ],
+                        );
+                      }),
+                      itemCount: snapshot.data!.docs.length));
+            } else {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await checkInternetConnection();
+                  if (hasInternet == true) {
+                    setState(() {});
+                  }
+                },
+                child: ListView(
+                  children: [
+                    SizedBox(height: Dimensions.height45 * 2),
+                    Image.asset(
+                      'assets/images/no_internet.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                    SizedBox(
+                      height: Dimensions.height15,
+                    ),
+                    Center(
+                      child: BigText(
+                        text: "Attention!!!",
+                        color: Colors.redAccent,
+                        size: Dimensions.font26,
+                      ),
+                    ),
+                    SizedBox(
+                      height: Dimensions.height10,
+                    ),
+                    Center(
+                      child: BigText(
+                        text: "Internet Connection Required",
+                        // color: Colors.redAccent,
+                        size: Dimensions.font20,
+                      ),
+                    ),
+                    SizedBox(height: Dimensions.height10),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: Dimensions.height10),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radius20),
+                          color: AppColors.mainColor),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: SmallText(
+                              text: "Turn on Internet",
                               color: Colors.white,
                               size: Dimensions.iconSize16,
-                            )),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              }
-            }),
-        floatingActionButton: _hasInternet == true
-            ? FloatingActionButton(
-                backgroundColor: AppColors.mainColor,
-                onPressed: (() {
-                  titleController.clear();
-                  pickDateController.clear();
-                  file = null;
-                  String buttontext = "Upload PDF";
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: ((context) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: Wrap(children: [
-                          Container(
-                            color: Color(0xFF737373),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).canvasColor,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(Dimensions.radius15),
-                                  topRight:
-                                      Radius.circular(Dimensions.radius15),
-                                ),
+                            ),
+                          ),
+                          Center(
+                              child: SmallText(
+                            text: "Refresh This Page",
+                            color: Colors.white,
+                            size: Dimensions.iconSize16,
+                          )),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+          }),
+      floatingActionButton: _hasInternet == true
+          ? FloatingActionButton(
+              backgroundColor: AppColors.mainColor,
+              onPressed: (() {
+                titleController.clear();
+                pickDateController.clear();
+                file = null;
+                String buttontext = "Upload PDF";
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: ((context) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: Wrap(children: [
+                        Container(
+                          color: Color(0xFF737373),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).canvasColor,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(Dimensions.radius15),
+                                topRight: Radius.circular(Dimensions.radius15),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: Dimensions.width20,
-                                  vertical: Dimensions.height20),
-                              child: StatefulBuilder(builder:
-                                  (BuildContext context, StateSetter State) {
-                                return Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      buildTitle(),
-                                      SizedBox(height: Dimensions.height20),
-                                      buildDateTextField(),
-                                      SizedBox(height: Dimensions.height20),
-                                      RaisedButton(
-                                          onPressed:
-                                              buttontext == "We got Your PDF"
-                                                  ? null
-                                                  : () async {
-                                                      final path =
-                                                          await FlutterDocumentPicker
-                                                              .openDocument();
-                                                      if (path != null) {
-                                                        State(
-                                                          () {
-                                                            file = File(path);
-                                                          },
-                                                        );
-                                                        State(
-                                                          () {
-                                                            buttontext =
-                                                                "We got Your PDF";
-                                                          },
-                                                        );
-                                                      }
-                                                    },
-                                          child: Text(buttontext)),
-                                      SizedBox(height: Dimensions.height20),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          RaisedButton(
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Dimensions.width20,
+                                vertical: Dimensions.height20),
+                            child: StatefulBuilder(builder:
+                                (BuildContext context, StateSetter State) {
+                              return Form(
+                                key: _formKey,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    buildTitle(),
+                                    SizedBox(height: Dimensions.height20),
+                                    buildDateTextField(),
+                                    SizedBox(height: Dimensions.height20),
+                                    ButtonTheme(
+                                      height: Dimensions.height20 * 2,
+                                      buttonColor:
+                                          Color.fromARGB(255, 231, 231, 231),
+                                      child: RaisedButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        onPressed:
+                                            buttontext == "We got Your PDF"
+                                                ? null
+                                                : () async {
+                                                    final path =
+                                                        await FlutterDocumentPicker
+                                                            .openDocument();
+                                                    if (path != null) {
+                                                      State(
+                                                        () {
+                                                          file = File(path);
+                                                        },
+                                                      );
+                                                      State(
+                                                        () {
+                                                          buttontext =
+                                                              "We got Your PDF";
+                                                        },
+                                                      );
+                                                    }
+                                                  },
+                                        child: Text(
+                                          buttontext,
+                                          style: TextStyle(
+                                              fontSize: Dimensions.font16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: Dimensions.height20),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        ButtonTheme(
+                                          height: Dimensions.height20 * 2,
+                                          child: RaisedButton(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
                                               onPressed: file == null
                                                   ? null
                                                   : () async {
@@ -342,28 +366,34 @@ class _CircularPageState extends State<CircularPage> {
                                                             .clear();
                                                       }
                                                     },
-                                              child: Text("Submit")),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
+                                              child: Text("Submit",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          Dimensions.font16,
+                                                      fontWeight:
+                                                          FontWeight.w500))),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
                           ),
-                        ]),
-                      );
-                    }),
-                  );
-                }),
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  // size: Dimensions.iconSize,
-                ),
-              )
-            : null,
-            );
+                        ),
+                      ]),
+                    );
+                  }),
+                );
+              }),
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+                // size: Dimensions.iconSize,
+              ),
+            )
+          : null,
+    );
   }
 
   Widget buildTitle() {

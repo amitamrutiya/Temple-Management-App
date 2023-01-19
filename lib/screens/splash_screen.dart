@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 firebase_storage.ListResult? result;
-  List<String> items = ['2018-2019'];
+List<String> items = ['2018-2019'];
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
@@ -44,6 +44,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void initState() {
+    print(Dimensions.screenHeight);
+    print(Dimensions.screenWidth);
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2))
           ..forward();

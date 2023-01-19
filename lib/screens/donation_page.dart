@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:temple/models/donation_model.dart';
 import 'package:temple/screens/donation_status_page.dart';
+import 'package:temple/utils/secret.dart';
 import 'package:temple/utils/colors.dart';
 import 'package:temple/utils/constant.dart';
 import 'package:temple/utils/dimensions.dart';
@@ -40,7 +41,7 @@ class _DontaionPageState extends State<DontaionPage> {
 
   void _openCheckout() {
     var options = {
-      'key': 'rzp_test_Z0IosmVX7HQWLH',
+      'key': SECRET.RAZORPAY_SECRED_ID,
       'amount': num.parse(donationAmountController.text) * 100,
       'name': 'GSFC Organization',
       'description': 'Payment for Your Temple Doantion',
@@ -63,9 +64,9 @@ class _DontaionPageState extends State<DontaionPage> {
       headers: {'Content-type': 'application/json'},
       body: json.encode(
         {
-          'service_id': 'service_le7bvqm',
-          'template_id': "template_3l1ckvs",
-          'user_id': "hqoRY3FK13X6Hu7oW",
+          'service_id': SECRET.DONATION_SERVICE_ID,
+          'template_id': SECRET.DONATION_TEMPLATE_ID,
+          'user_id': SECRET.DONATION_USER_ID,
           'template_params': {
             'full_name': fullNameController.text,
             'address': addressController.text,

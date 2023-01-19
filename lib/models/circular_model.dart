@@ -6,19 +6,16 @@ class CircularModel {
   late String _date;
   late String _pdfname;
 
-
   CircularModel({
     required uploadTime,
     required eventTitle,
     required date,
     required pdfname,
-  
   }) {
     _uploadTime = uploadTime;
     _eventTitle = eventTitle;
     _date = date;
     _pdfname = pdfname;
-  
   }
 
   CircularModel.fromJson(Map<String, dynamic> json) {
@@ -26,7 +23,6 @@ class CircularModel {
     _eventTitle = json['eventTitle'];
     _date = json['date'];
     _pdfname = json['pdfname'];
-  
   }
 
   Map<String, dynamic> toJson() {

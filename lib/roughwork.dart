@@ -1,14 +1,10 @@
-
-
-
-
 // Hello Everyone
-// This is Amit Amrutiya. I am from Gujarat, 
+// This is Amit Amrutiya. I am from Gujarat,
 //and I‘m 20 years old.
 
 // I am currently studying for a Bachelor of Technology
-// in computer science in  one of India’s leading public 
-//universities named charusat universty. 
+// in computer science in  one of India’s leading public
+//universities named charusat universty.
 
 // I have completed my secondary and higher school certificate
 // with excellent results.
@@ -19,7 +15,7 @@
 
 // And, I can speak Gujrati, English and Hindi.
 
-// I have enough skill in computer literacy,I hae skill to 
+// I have enough skill in computer literacy,I hae skill to
 //create a android and ios application using flutter technology
 
 // My mission is to complete a bachelor’s degree,

@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:temple/utils/secret.dart';
 import 'package:temple/utils/colors.dart';
 import 'package:temple/utils/constant.dart';
 import 'package:temple/utils/dimensions.dart';
@@ -169,51 +170,56 @@ class _SlotBookingPageState extends State<SlotBookingPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: Dimensions.height20 * 3),
-                        child: RaisedButton(
-                          color: AppColors.mainColor,
-                          onPressed: () async {
-                            if (ConnectivityResult.none !=
-                                await Connectivity().checkConnectivity()) {
-                              final isValid = _formKey.currentState!.validate();
-                              FocusScope.of(context).unfocus();
-                              // if (_selectedPujari == "Click on Me") {
-                              //   showCustomSnakBar("Please Select Pujari",
-                              //       title: "Attention");
-                              // }
-                              // if (isValid && _selectedPujari != "Click on Me")
-                              // final bool? result =
-                              // await telephony.requestPhoneAndSmsPermissions;
-                              if (isValid) {
-                                _formKey.currentState!.save();
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                // "Yajman Name : ${fullNameController.text} \n Yajman PhoneNumber : ${phoneNumberController.text} \n Name of Pooja : ${poojnameController.text} \n Date for Pooja : ${pickDateController.text} \n Pooja Time : ${pickTimeController.text} \n Extra Message : ${descriptionController.text}")
-                                await sendMail();
-                                pickDateController.clear();
-                                pickTimeController.clear();
-                                phoneNumberController.clear();
-                                fullNameController.clear();
-                                poojnameController.clear();
-                                descriptionController.clear();
-                                // _selectedPujari = "Click on Me";
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                Get.snackbar("All went Perfect",
-                                    "We got Your Information");
+                        child: ButtonTheme(
+                          height: Dimensions.height30 * 1.7,
+                          child: RaisedButton(
+                            color: AppColors.mainColor,
+                            onPressed: () async {
+                              if (ConnectivityResult.none !=
+                                  await Connectivity().checkConnectivity()) {
+                                final isValid =
+                                    _formKey.currentState!.validate();
+                                FocusScope.of(context).unfocus();
+                                // if (_selectedPujari == "Click on Me") {
+                                //   showCustomSnakBar("Please Select Pujari",
+                                //       title: "Attention");
+                                // }
+                                // if (isValid && _selectedPujari != "Click on Me")
+                                // final bool? result =
+                                // await telephony.requestPhoneAndSmsPermissions;
+                                if (isValid) {
+                                  _formKey.currentState!.save();
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  // "Yajman Name : ${fullNameController.text} \n Yajman PhoneNumber : ${phoneNumberController.text} \n Name of Pooja : ${poojnameController.text} \n Date for Pooja : ${pickDateController.text} \n Pooja Time : ${pickTimeController.text} \n Extra Message : ${descriptionController.text}")
+                                  await sendMail();
+                                  pickDateController.clear();
+                                  pickTimeController.clear();
+                                  phoneNumberController.clear();
+                                  fullNameController.clear();
+                                  poojnameController.clear();
+                                  descriptionController.clear();
+                                  // _selectedPujari = "Click on Me";
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  Get.snackbar("All went Perfect",
+                                      "We got Your Information");
+                                }
+                              } else {
+                                showCustomSnakBar(
+                                    "Please Turn on Your Internet",
+                                    title: "Attention");
                               }
-                            } else {
-                              showCustomSnakBar("Please Turn on Your Internet",
-                                  title: "Attention");
-                            }
-                          },
-                          child: Center(
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                fontSize: Dimensions.font20,
-                                color: Colors.white,
+                            },
+                            child: Center(
+                              child: Text(
+                                "Submit",
+                                style: TextStyle(
+                                  fontSize: Dimensions.font20,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -503,16 +509,17 @@ class _SlotBookingPageState extends State<SlotBookingPage> {
       // },
     );
   }
-Future sendMail() async {
+
+  Future sendMail() async {
     final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
     final response = await http.post(
       url,
       headers: {'Content-type': 'application/json'},
       body: json.encode(
         {
-          'service_id': 'service_w7rreis',
-          'template_id': "template_d4ykurk",
-          'user_id': "nV_dHrjncznGA5Hh9",
+          'service_id': SECRET.SLOT_BOOKING_SERVICE_ID,
+          'template_id': SECRET.SLOT_BOOKING_TEMPLATE_ID,
+          'user_id': SECRET.SLOT_BOOKING_USER_ID,
           'template_params': {
             'full_name': fullNameController.text,
             'message': descriptionController.text,
@@ -528,5 +535,4 @@ Future sendMail() async {
     print(response.body);
     return response;
   }
-
-  }
+}

@@ -46,7 +46,7 @@ class RouteHelper {
     ),
     GetPage(
       name: contactUsPage,
-      page: () =>  ContactUsPage(),
+      page: () => ContactUsPage(),
     ),
     GetPage(
       name: donationPage,

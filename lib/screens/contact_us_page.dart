@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:temple/models/contact_us_model.dart';
+import 'package:temple/utils/secret.dart';
 import 'package:temple/utils/colors.dart';
 import 'package:temple/utils/constant.dart';
 import 'package:temple/utils/dimensions.dart';
@@ -49,9 +50,9 @@ class _ContactUsPageState extends State<ContactUsPage> {
         headers: {'Content-type': 'application/json'},
         body: json.encode(
           {
-            'service_id': 'service_f40wkaw',
-            'template_id': "template_brjjjmd",
-            'user_id': "nV_dHrjncznGA5Hh9",
+            'service_id': SECRET.CONTACT_US_SERVICE_ID,
+            'template_id': SECRET.CONTACT_US_TEMPLATE_ID,
+            'user_id': SECRET.CONTACT_US_USER_ID,
             'template_params': {
               'full_name': fullNameController.text,
               'message': messageController.text,

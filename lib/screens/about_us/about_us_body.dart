@@ -10,25 +10,30 @@ import '../../utils/dimensions.dart';
 List<Widget> aboutUs = <Widget>[
   Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Column(
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: Dimensions.width20, vertical: Dimensions.height10),
-          decoration: BoxDecoration(
-              color: AppColors.iconColor1,
-              borderRadius: BorderRadius.circular(Dimensions.radius30)),
-          child: BigText(
-            text: "INTRODUCTION",
-            size: Dimensions.font20 * 2,
+    child: SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: Dimensions.width20, vertical: Dimensions.height10),
+            decoration: BoxDecoration(
+                color: AppColors.iconColor1,
+                borderRadius: BorderRadius.circular(Dimensions.radius30)),
+            child: BigText(
+              text: "INTRODUCTION",
+              size: Dimensions.font20 * 2,
+            ),
           ),
-        ),
-        SizedBox(height: Dimensions.height10),
-        const Text(
-            '''GSFC (Sikka Unit) has started its DAP Production in 1987 at Motikhavdi on Jamnagar - Dwarka highway at a distance of around 27 Kms, from Jamnagar. The company has also constructed its own township having 192 quarters near to the plant for the residents of officers and staff.\n
-It was decided to construct a temple inside the township so that the residents of colony can actively take part in the religious overall activity. For the purpose, a Fertilizer Township Charitable Trust was established in 1989 having its Registration No. E-796 Jamnagar dtd.10.02.1989. All the employees are contributing every month.\n
-With the donations from well-wishers who came forward from time to time and as a result a “Shiva Temple” was constructed and its Pran Pratishtha was celebrated on “Mahashivratri day” i.e. on 25.02.1998. As per the plan, the construction of other 7 small temples dedicated to various god, goddess also completed around the main “Shiva Temple” in the year 2004. The “Pran Pratishtha Mahotsav” of these 7 temples was celebrated from 31.10.04 to 02.11.04.\n''')
-      ],
+          SizedBox(height: Dimensions.height10),
+          Text(
+            '''        GSFC (Sikka Unit) has started its DAP Production in 1987 at Motikhavdi on Jamnagar - Dwarka highway at a distance of around 27 Kms, from Jamnagar. The company has also constructed its own township having 192 quarters near to the plant for the residents of officers and staff.\n
+          It was decided to construct a temple inside the township so that the residents of colony can actively take part in the religious overall activity. For the purpose, a Fertilizer Township Charitable Trust was established in 1989 having its Registration No. E-796 Jamnagar dtd.10.02.1989. All the employees are contributing every month.\n
+          With the donations from well-wishers who came forward from time to time and as a result a “Shiva Temple” was constructed and its Pran Pratishtha was celebrated on “Mahashivratri day” i.e. on 25.02.1998. As per the plan, the construction of other 7 small temples dedicated to various god, goddess also completed around the main “Shiva Temple” in the year 2004. The “Pran Pratishtha Mahotsav” of these 7 temples was celebrated from 31.10.04 to 02.11.04.\n''',
+            style: TextStyle(
+                fontSize: Dimensions.font16, fontWeight: FontWeight.w400),
+          )
+        ],
+      ),
     ),
   ),
   Padding(
@@ -140,10 +145,9 @@ With the donations from well-wishers who came forward from time to time and as a
           ),
         ),
         SizedBox(height: Dimensions.height10),
-        Image(
-          height: Dimensions.height10 * 36,
-          image: const AssetImage('assets/images/about-img2.jpg'),
-          fit: BoxFit.cover,
+        Image.asset(
+          ('assets/images/about-img2.jpg'),
+          height: Dimensions.height30 * 10,
         ),
         SizedBox(height: Dimensions.height10),
         Column(
@@ -220,7 +224,7 @@ class _AboutUsBodyState extends State<AboutUsBody> {
             return aboutUs[index];
           }),
           options: CarouselOptions(
-            height: Dimensions.height10 * 65,
+            height: Dimensions.height10 * 60,
             reverse: false,
             enableInfiniteScroll: false,
             initialPage: 0,
