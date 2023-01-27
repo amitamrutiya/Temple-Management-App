@@ -9,7 +9,6 @@ State Management : GETx
 
 ## Getting Started
 
-Run Project 
 1) Clone the repository
 ```
 https://github.com/amitamrutiya2210/GSFC_Temple_Management
@@ -26,8 +25,8 @@ flutter pub get
 ``` 
 flutter run
 ```
-
-Download the app from this this [link](https://drive.google.com/file/d/1ftYpT-D3-Cv75EGe4-pwZLNDtdVht9sp/view?usp=sharing).
+\
+Download the app from this this [link](https://drive.google.com/file/d/1pFQZnlTYGDpJM9tbxxg5VIsiSkJTLZs6/view?usp=share_link).\
 Open the app on your android device.
 
 ## Demo of Project
