@@ -7,7 +7,7 @@ import 'package:temple/routes/route_helper.dart';
 import 'package:temple/utils/colors.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
