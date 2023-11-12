@@ -347,11 +347,13 @@ class _DontaionPageState extends State<DontaionPage> {
                             children: [
                               SizedBox(height: Dimensions.height20),
                               Center(
-                                child: RaisedButton(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: Dimensions.height20,
-                                      horizontal: Dimensions.width20),
-                                  color: AppColors.mainColor,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: Dimensions.height20,
+                                        horizontal: Dimensions.width20),
+                                    backgroundColor: AppColors.mainColor,
+                                  ),
                                   onPressed: () async {
                                     if (ConnectivityResult.none !=
                                         await Connectivity()

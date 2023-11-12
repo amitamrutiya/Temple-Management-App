@@ -1,5 +1,3 @@
-import 'package:flutter/animation.dart';
-
 class ContactUsModel {
   late String _fullName;
   late int _phoneNumber;

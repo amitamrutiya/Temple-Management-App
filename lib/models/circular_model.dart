@@ -1,5 +1,3 @@
-import 'package:flutter/animation.dart';
-
 class CircularModel {
   late String _uploadTime;
   late String _eventTitle;

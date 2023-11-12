@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import '../routes/route_helper.dart';
 import '../utils/dimensions.dart';
 
@@ -12,7 +12,7 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-firebase_storage.ListResult? result;
+ListResult? result;
 List<String> items = ['2018-2019'];
 
 class _SplashScreenState extends State<SplashScreen>
@@ -21,23 +21,23 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController controller;
   void putPdfNameInItem() {
     items.clear();
-    result?.items.forEach((firebase_storage.Reference ref) {
+    result?.items.forEach((Reference ref) {
       items.add((ref.name).replaceAll('.pdf', ''));
     });
     print(items);
   }
 
   Future<void> listExample() async {
-    result = await firebase_storage.FirebaseStorage.instance
+    result = await FirebaseStorage.instance
         .ref()
         .child('files')
         .listAll();
 
-    result?.items.forEach((firebase_storage.Reference ref) {
+    result?.items.forEach((Reference ref) {
       print('Found file: ${ref.fullPath}');
     });
 
-    result?.prefixes.forEach((firebase_storage.Reference ref) {
+    result?.prefixes.forEach((Reference ref) {
       print('Found directory: ${ref.fullPath}');
     });
   }

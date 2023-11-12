@@ -17,13 +17,19 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -46,34 +52,11 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAAqffY_u4gtfKAd2FbofGOtqiGeT7JZQM',
-    appId: '1:242603092871:web:7c834b17a63b84099ec122',
-    messagingSenderId: '242603092871',
-    projectId: 'food-delivery-app-f6241',
-    authDomain: 'food-delivery-app-f6241.firebaseapp.com',
-    storageBucket: 'food-delivery-app-f6241.appspot.com',
-    measurementId: 'G-KP000FHVYG',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBKFp8PTt-t_kZyJ3-MKbbJIE5I0rCio-8',
-    appId: '1:242603092871:android:67c83fbd083c09409ec122',
-    messagingSenderId: '242603092871',
-    projectId: 'food-delivery-app-f6241',
-    storageBucket: 'food-delivery-app-f6241.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB-mDYiF61zNinuasmOZIutsC4RBcHyBYc',
-    appId: '1:242603092871:ios:e1a82fbc1a3cf85e9ec122',
-    messagingSenderId: '242603092871',
-    projectId: 'food-delivery-app-f6241',
-    storageBucket: 'food-delivery-app-f6241.appspot.com',
-    androidClientId:
-        '242603092871-pgj7ji5m1ujlggrltcrjh1q00umfk5c2.apps.googleusercontent.com',
-    iosClientId:
-        '242603092871-g4ilrdvqsc9u4uh2mdksttlnj03ik67o.apps.googleusercontent.com',
-    iosBundleId: 'com.example.temple',
+    apiKey: 'AIzaSyA1UI5x95npv0Jv03kQnWjkxkiXaDmSyhI',
+    appId: '1:940975571850:android:668c036630ba27de2ffe73',
+    messagingSenderId: '940975571850',
+    projectId: 'temple-management-764a1',
+    storageBucket: 'temple-management-764a1.appspot.com',
   );
 }

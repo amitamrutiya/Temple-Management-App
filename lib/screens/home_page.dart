@@ -120,11 +120,13 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(height: Dimensions.height30),
-              RaisedButton(
-                  padding: EdgeInsets.symmetric(
-                      vertical: Dimensions.height20,
-                      horizontal: Dimensions.width20),
-                  color: AppColors.mainColor,
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                        vertical: Dimensions.height20,
+                        horizontal: Dimensions.width20),
+                    backgroundColor: AppColors.mainColor,
+                  ),
                   onPressed: () {
                     Get.toNamed(RouteHelper.getAboutUsPage());
                   },

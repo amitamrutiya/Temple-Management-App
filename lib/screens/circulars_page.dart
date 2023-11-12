@@ -1,8 +1,10 @@
+// ignore_for_file: unused_local_variable, deprecated_member_use
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:get/get.dart';
@@ -27,7 +29,7 @@ class CircularPage extends StatefulWidget {
 // int number = 0;
 
 class _CircularPageState extends State<CircularPage> {
-  firebase_storage.Reference? ref;
+  Reference? ref;
   final _formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   var pickDateController = TextEditingController();
@@ -154,10 +156,13 @@ class _CircularPageState extends State<CircularPage> {
                                     child: ButtonTheme(
                                       buttonColor: Colors.grey,
                                       height: Dimensions.height20 * 2,
-                                      child: RaisedButton(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.grey,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
                                         onPressed: () async {
                                           await checkInternetConnection();
                                           if (hasInternet == true)
@@ -300,10 +305,12 @@ class _CircularPageState extends State<CircularPage> {
                                       height: Dimensions.height20 * 2,
                                       buttonColor:
                                           Color.fromARGB(255, 231, 231, 231),
-                                      child: RaisedButton(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
                                         onPressed:
                                             buttontext == "We got Your PDF"
                                                 ? null
@@ -340,11 +347,13 @@ class _CircularPageState extends State<CircularPage> {
                                       children: [
                                         ButtonTheme(
                                           height: Dimensions.height20 * 2,
-                                          child: RaisedButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                              ),
                                               onPressed: file == null
                                                   ? null
                                                   : () async {
@@ -436,7 +445,7 @@ class _CircularPageState extends State<CircularPage> {
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime.now(),
-              lastDate: DateTime(2023),
+              lastDate: DateTime.now(),
             );
             if (newDate == null) return;
             setState(() {
@@ -469,20 +478,22 @@ class _CircularPageState extends State<CircularPage> {
     );
   }
 
-  Future<firebase_storage.UploadTask?> uploadFile(File file) async {
-    if (file == null) {
-      Scaffold.of(context)
+  Future<UploadTask?> uploadFile(File file) async {
+    final GlobalKey<ScaffoldState> _scaffoldKey =
+        new GlobalKey<ScaffoldState>();
+    if (file.isNull) {
+      ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Unable to Upload")));
       return null;
     }
 
-    firebase_storage.UploadTask uploadTask;
+    UploadTask uploadTask;
 
     // Create a Reference to the file
-    ref = firebase_storage.FirebaseStorage.instance.ref().child('circulars/').child(
+    ref = FirebaseStorage.instance.ref().child('circulars/').child(
         '/${(file.path).replaceAll('/data/user/0/com.example.temple/cache/', '')}');
 
-    final metadata = firebase_storage.SettableMetadata(
+    final metadata = SettableMetadata(
         contentType: 'circulars/pdf',
         customMetadata: {'picked-file-path': file.path});
     print("Uploading..!");
@@ -495,7 +506,7 @@ class _CircularPageState extends State<CircularPage> {
 
   // List<String> items = [];
   // void putPdfNameInItem() {
-  //   result?.items.forEach((firebase_storage.Reference ref) {
+  //   result?.items.forEach((Reference ref) {
   //     items.add((ref.name).replaceAll('.pdf', ''));
   //   });
   //   print(items);
@@ -510,13 +521,13 @@ class _CircularPageState extends State<CircularPage> {
   }
 
   // Future getCircularPDFlink({required String fileName}) async {
-  //   return await firebase_storage.FirebaseStorage.instance
+  //   return await FirebaseStorage.instance
   //       .ref('circulars/$fileName')
   //       .getDownloadURL();
   // }
 
   Future<File?> downloadFile(String name) async {
-    String url = await firebase_storage.FirebaseStorage.instance
+    String url = await FirebaseStorage.instance
         .ref('circulars/$name')
         .getDownloadURL();
     final appStorage = await getApplicationDocumentsDirectory();
@@ -526,7 +537,7 @@ class _CircularPageState extends State<CircularPage> {
           options: Options(
               responseType: ResponseType.bytes,
               followRedirects: false,
-              receiveTimeout: 0));
+              receiveTimeout: Duration.zero));
       Navigator.pop(context);
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
@@ -541,24 +552,24 @@ class _CircularPageState extends State<CircularPage> {
   }
 
   Future<void> listOFPDFfromFirebase() async {
-    firebase_storage.ListResult result = await firebase_storage
-        .FirebaseStorage.instance
+    ListResult result = await 
+        FirebaseStorage.instance
         .ref()
         .child('circulars')
         .listAll();
 
-    result.items.forEach((firebase_storage.Reference ref) {
+    result.items.forEach((Reference ref) {
       print('Found file: ${ref.fullPath}');
     });
 
-    result.prefixes.forEach((firebase_storage.Reference ref) {
+    result.prefixes.forEach((Reference ref) {
       print('Found directory: ${ref.fullPath}');
     });
   }
 
   Future<void> deleteCircularData(String id, int index, String name) async {
     showLoaderDialog(context, "Deleting...");
-    await firebase_storage.FirebaseStorage.instance
+    await FirebaseStorage.instance
         .ref('circulars/$name')
         .delete();
     await FirebaseFirestore.instance.collection("Circular").doc(id).delete();

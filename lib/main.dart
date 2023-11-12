@@ -9,6 +9,7 @@ import 'package:temple/utils/colors.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'temple-management-764a1',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -27,7 +28,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Temple',
-      // home: RoughWork(),
       initialRoute: RouteHelper.getSplashPage(),
       getPages: RouteHelper.routes,
       theme: ThemeData(

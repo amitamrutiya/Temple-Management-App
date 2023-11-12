@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart' ;
+import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,7 +23,7 @@ class CustomeDrawer extends StatefulWidget {
 
 class _CustomeDrawerState extends State<CustomeDrawer> {
   // bool isLoading = false;
-  // firebase_storage.ListResult? result;
+  // ListResult? result;
   @override
   void initState() {
     super.initState();
@@ -191,28 +192,32 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
           height: 1,
           thickness: 2,
         ),
-        // Align(
-        //   alignment: Alignment.bottomRight,
-        //   child: RaisedButton(
-        //     child: SmallText(
-        //       text: 'Upload Expanses',
-        //       size: Dimensions.font16,
-        //     ),
-        //     onPressed: (() async {
-        //       if (_hasInternet == true) {
-        //         final path = await FlutterDocumentPicker.openDocument();
-        //         if (path != null) {
-        //           File file = File(path);
-        //           firebase_storage.UploadTask? task = await uploadFile(file);
-        //           Navigator.pop(context);
-        //         }
-        //       } else {
-        //         showCustomSnakBar("Please Turn on Your Internet",
-        //             title: "Attention");
-        //       }
-        //     }),
-        //   ),
-        // ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: TextButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey,
+              ),
+            child: SmallText(
+              text: 'Upload Expanses',
+              size: Dimensions.font16,
+
+            ),
+            onPressed: (() async {
+              if (_hasInternet == true) {
+                final path = await FlutterDocumentPicker.openDocument();
+                if (path != null) {
+                  File file = File(path);
+                  UploadTask? task = await uploadFile(file);
+                  Navigator.pop(context);
+                }
+              } else {
+                showCustomSnakBar("Please Turn on Your Internet",
+                    title: "Attention");
+              }
+            }),
+          ),
+        ),
         SizedBox(height: Dimensions.height30),
       ]),
     );
@@ -227,22 +232,22 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
   }
 
   // Future<void> listExample() async {
-  //   result = await firebase_storage.FirebaseStorage.instance
+  //   result = await FirebaseStorage.instance
   //       .ref()
   //       .child('files')
   //       .listAll();
 
-  //   result?.items.forEach((firebase_storage.Reference ref) {
+  //   result?.items.forEach((Reference ref) {
   //     print('Found file: ${ref.fullPath}');
   //   });
 
-  //   result?.prefixes.forEach((firebase_storage.Reference ref) {
+  //   result?.prefixes.forEach((Reference ref) {
   //     print('Found directory: ${ref.fullPath}');
   //   });
   // }
 
   Future<File?> downloadFile(String name) async {
-    String url = await firebase_storage.FirebaseStorage.instance
+    String url = await FirebaseStorage.instance
         .ref('files/$name')
         .getDownloadURL();
     final appStorage = await getApplicationDocumentsDirectory();
@@ -252,7 +257,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
           options: Options(
               responseType: ResponseType.bytes,
               followRedirects: false,
-              receiveTimeout: 0));
+              receiveTimeout: Duration.zero));
       Navigator.pop(context);
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
@@ -263,7 +268,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
     }
   }
 
-  Future<firebase_storage.UploadTask?> uploadFile(File file) async {
+  Future<UploadTask?> uploadFile(File file) async {
     // showLoaderDialog(context, "Uploading...");
     if (file == null) {
       ScaffoldMessenger.of(context)
@@ -271,16 +276,16 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
       return null;
     }
 
-    firebase_storage.UploadTask uploadTask;
+    UploadTask uploadTask;
 
     // Create a Reference to the file
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+    Reference ref = FirebaseStorage.instance
         .ref()
         .child('files/')
         .child(
             '/${(file.path).replaceAll('/data/user/0/com.example.temple/cache/', '')}');
 
-    final metadata = firebase_storage.SettableMetadata(
+    final metadata = SettableMetadata(
         contentType: 'file/pdf',
         customMetadata: {'picked-file-path': file.path});
     print("Uploading..!");
@@ -296,7 +301,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
   // List<String> items = ['2018-2019'];
   // void putPdfNameInItem() {
   //   items.clear();
-  //   result?.items.forEach((firebase_storage.Reference ref) {
+  //   result?.items.forEach((Reference ref) {
   //     items.add((ref.name).replaceAll('.pdf', ''));
   //   });
   //   print(items);

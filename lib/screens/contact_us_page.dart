@@ -149,12 +149,14 @@ class _ContactUsPageState extends State<ContactUsPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  RaisedButton(
-                                    elevation: 2,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: Dimensions.height20,
-                                        horizontal: Dimensions.width20),
-                                    color: AppColors.mainColor,
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 2,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: Dimensions.height20,
+                                          horizontal: Dimensions.width20),
+                                      backgroundColor: AppColors.mainColor,
+                                    ),
                                     onPressed: () async {
                                       if (ConnectivityResult.none !=
                                           await Connectivity()

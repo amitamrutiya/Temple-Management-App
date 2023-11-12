@@ -172,8 +172,10 @@ class _SlotBookingPageState extends State<SlotBookingPage> {
                             horizontal: Dimensions.height20 * 3),
                         child: ButtonTheme(
                           height: Dimensions.height30 * 1.7,
-                          child: RaisedButton(
-                            color: AppColors.mainColor,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.mainColor,
+                            ),
                             onPressed: () async {
                               if (ConnectivityResult.none !=
                                   await Connectivity().checkConnectivity()) {
