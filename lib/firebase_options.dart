@@ -57,6 +57,7 @@ class DefaultFirebaseOptions {
     appId: '1:940975571850:android:668c036630ba27de2ffe73',
     messagingSenderId: '940975571850',
     projectId: 'temple-management-764a1',
+    databaseURL: 'https://temple-management-764a1-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'temple-management-764a1.appspot.com',
   );
 }
