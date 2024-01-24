@@ -18,6 +18,7 @@ import 'package:temple/utils/dimensions.dart';
 import 'package:temple/widget/big_text.dart';
 import 'package:temple/widget/show_custom_snakbar.dart';
 import 'package:temple/widget/small_text.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CircularPage extends StatefulWidget {
   CircularPage({Key? key}) : super(key: key);
@@ -445,7 +446,7 @@ class _CircularPageState extends State<CircularPage> {
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime.now(),
-              lastDate: DateTime.now(),
+              lastDate: DateTime.now().add(Duration(days: 180)),
             );
             if (newDate == null) return;
             setState(() {
@@ -513,11 +514,30 @@ class _CircularPageState extends State<CircularPage> {
   // }
 
   Future openFile({required String fileName}) async {
-    showLoaderDialog(context, 'Loading...');
-    final file = await downloadFile(fileName);
-    if (file == null) return;
-    print("path:${file.path}");
-    OpenFile.open(file.path);
+    try {
+      var status = await Permission.manageExternalStorage.request();
+      if (!status.isGranted) {
+        print('Permission not granted');
+        return;
+      }
+
+      showLoaderDialog(context, 'Loading...');
+      final file = await downloadFile(fileName);
+      if (file == null) return;
+      print("path:${file.path}");
+
+
+      final result = await OpenFile.open(
+        file.path,
+        type: "application/pdf",
+      );
+
+      // Check the result of the open operation
+      print('Open file result: ${result.type}, ${result.message}');
+    } on Exception catch (e) {
+      print(e.toString());
+      debugPrint("error" + e.toString());
+    }
   }
 
   // Future getCircularPDFlink({required String fileName}) async {
@@ -527,17 +547,19 @@ class _CircularPageState extends State<CircularPage> {
   // }
 
   Future<File?> downloadFile(String name) async {
-    String url = await FirebaseStorage.instance
-        .ref('circulars/$name')
-        .getDownloadURL();
+    String url =
+        await FirebaseStorage.instance.ref('circulars/$name').getDownloadURL();
+    print("url:$url");
     final appStorage = await getApplicationDocumentsDirectory();
     final file = File('${appStorage.path}/$name');
+    print("file:$file");
     try {
       final response = await Dio().get(url,
           options: Options(
               responseType: ResponseType.bytes,
               followRedirects: false,
-              receiveTimeout: Duration.zero));
+              receiveTimeout: Duration(seconds: 30)));
+
       Navigator.pop(context);
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
@@ -552,11 +574,8 @@ class _CircularPageState extends State<CircularPage> {
   }
 
   Future<void> listOFPDFfromFirebase() async {
-    ListResult result = await 
-        FirebaseStorage.instance
-        .ref()
-        .child('circulars')
-        .listAll();
+    ListResult result =
+        await FirebaseStorage.instance.ref().child('circulars').listAll();
 
     result.items.forEach((Reference ref) {
       print('Found file: ${ref.fullPath}');
@@ -569,9 +588,7 @@ class _CircularPageState extends State<CircularPage> {
 
   Future<void> deleteCircularData(String id, int index, String name) async {
     showLoaderDialog(context, "Deleting...");
-    await FirebaseStorage.instance
-        .ref('circulars/$name')
-        .delete();
+    await FirebaseStorage.instance.ref('circulars/$name').delete();
     await FirebaseFirestore.instance.collection("Circular").doc(id).delete();
     Navigator.pop(context);
   }

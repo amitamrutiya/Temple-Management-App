@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart' ;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
@@ -15,6 +15,8 @@ import 'package:temple/widget/big_text.dart';
 import 'package:temple/widget/show_custom_snakbar.dart';
 import 'package:temple/widget/small_text.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 class CustomeDrawer extends StatefulWidget {
   @override
@@ -175,7 +177,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                             print(item.toString());
                             setState(() {
                               selectedItem = item!;
-                              openFile(fileName: '${item}.pdf');
+                              openFile(fileName: '$item.pdf');
                             });
                           } else {
                             showCustomSnakBar("Please Turn on Your Internet",
@@ -197,11 +199,10 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
           child: TextButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey,
-              ),
+            ),
             child: SmallText(
               text: 'Upload Expanses',
               size: Dimensions.font16,
-
             ),
             onPressed: (() async {
               if (_hasInternet == true) {
@@ -224,11 +225,29 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
   }
 
   Future openFile({required String fileName}) async {
-    showLoaderDialog(context, "Loading...");
-    final file = await downloadFile(fileName);
-    if (file == null) return;
-    print("path:${file.path}");
-    OpenFile.open(file.path);
+    try {
+      var status = await Permission.manageExternalStorage.request();
+      if (!status.isGranted) {
+        print('Permission not granted');
+        return;
+      }
+
+      showLoaderDialog(context, 'Loading...');
+      final file = await downloadFile(fileName);
+      if (file == null) return;
+      print("path:${file.path}");
+
+      final result = await OpenFile.open(
+        file.path,
+        type: "application/pdf",
+      );
+
+      // Check the result of the open operation
+      print('Open file result: ${result.type}, ${result.message}');
+    } on Exception catch (e) {
+      print(e.toString());
+      debugPrint("error" + e.toString());
+    }
   }
 
   // Future<void> listExample() async {
@@ -247,43 +266,40 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
   // }
 
   Future<File?> downloadFile(String name) async {
-    String url = await FirebaseStorage.instance
-        .ref('files/$name')
-        .getDownloadURL();
+    String url =
+        await FirebaseStorage.instance.ref('files/$name').getDownloadURL();
+    print("url:$url");
     final appStorage = await getApplicationDocumentsDirectory();
     final file = File('${appStorage.path}/$name');
+    print("file:$file");
     try {
       final response = await Dio().get(url,
           options: Options(
               responseType: ResponseType.bytes,
               followRedirects: false,
-              receiveTimeout: Duration.zero));
+              receiveTimeout: Duration(seconds: 30)));
+
       Navigator.pop(context);
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
       await raf.close();
+
       return file;
     } catch (e) {
+      print(e.toString());
+      debugPrint("error" + e.toString());
       return null;
     }
   }
 
+
   Future<UploadTask?> uploadFile(File file) async {
     // showLoaderDialog(context, "Uploading...");
-    if (file == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Unable to Upload")));
-      return null;
-    }
-
     UploadTask uploadTask;
 
     // Create a Reference to the file
-    Reference ref = FirebaseStorage.instance
-        .ref()
-        .child('files/')
-        .child(
-            '/${(file.path).replaceAll('/data/user/0/com.example.temple/cache/', '')}');
+    Reference ref = FirebaseStorage.instance.ref().child('files/').child(
+        '/${(file.path).replaceAll('/data/user/0/com.example.temple/cache/', '')}');
 
     final metadata = SettableMetadata(
         contentType: 'file/pdf',

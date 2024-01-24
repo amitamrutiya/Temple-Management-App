@@ -54,6 +54,7 @@ dependencies:
   firebase_storage_web: ^3.3.9
   http: ^0.13.0
   connectivity_plus: ^3.0.3
+  permission_handler: ^11.2.0
   
 
 

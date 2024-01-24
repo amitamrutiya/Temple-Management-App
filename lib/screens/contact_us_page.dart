@@ -39,9 +39,9 @@ class _ContactUsPageState extends State<ContactUsPage> {
     super.dispose();
   }
 
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
-    bool _isLoading = false;
     final LatLng _initialPostion = const LatLng(22.381875, 69.84974);
     Future sendMail() async {
       final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");

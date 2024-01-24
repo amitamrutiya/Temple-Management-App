@@ -22,23 +22,6 @@ class SlotBookingPage extends StatefulWidget {
 }
 
 class _SlotBookingPageState extends State<SlotBookingPage> {
-  // List<String> name = [
-  //   "Parth Adeshara",
-  //   "Bhavik Ambasara",
-  //   "Amit Amrutiya",
-  //   "Vrushabh Amrutiya",
-  //   "Harsh Avichal",
-  //   "Kunj Bapodariya",
-  //   "Kush Bhalodiya",
-  //   "Vedant Bhatt",
-  //   "Mit Butani",
-  //   "Riken Goyani",
-  //   "Maharshi Kevadiya",
-  //   "Mann Chandarana",
-  //   "Dev Desai",
-  // ];
-  // static String _selectedPujari = "Click on Me";
-  // static String get selectedPujari => _selectedPujari;
 
   StreamController<String> selectedPujariController = StreamController();
   final _formKey = GlobalKey<FormState>();
@@ -302,7 +285,7 @@ class _SlotBookingPageState extends State<SlotBookingPage> {
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime.now(),
-                lastDate: DateTime(2023),
+                lastDate: DateTime.now().add(Duration(days: 180)),
               );
               if (newDate == null) return;
               setState(() {
