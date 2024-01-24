@@ -31,7 +31,7 @@ class DonationStatusPage extends StatelessWidget {
                   SizedBox(height: Dimensions.height30),
                   Text(
                     status == 1
-                        ? "We have Successfully got your donation \n Keep doing Donation"
+                        ? "We have successfully got your donation \n Keep doing Donation"
                         : "Sorry to Say, Your order Failed",
                     textAlign: TextAlign.center,
                     style: TextStyle(

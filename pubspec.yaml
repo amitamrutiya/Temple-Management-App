@@ -38,7 +38,6 @@ dependencies:
   carousel_slider: ^4.1.1
   dots_indicator: ^2.1.0
   smooth_page_indicator: ^1.0.0+2
-  # flutter_google_maps: ^3.7.1
   geocoding: ^2.0.5
   geolocator: ^9.0.2
   cloud_firestore: ^4.5.0
