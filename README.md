@@ -11,7 +11,7 @@ State Management : GETx
 
 1) Clone the repository
 ```
-https://github.com/amitamrutiya2210/GSFC_Temple_Management
+git clone https://github.com/amitamrutiya2210/GSFC_Temple_Management
 ```
 2) Install the dependencies
 ```
